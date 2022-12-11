@@ -23,19 +23,19 @@
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eWp-ya-ydd"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QnP-oQ-7gZ">
+                                <rect key="frame" x="107" y="254" width="200" height="100"/>
+                                <state key="normal" image="us"/>
+                                <connections>
+                                    <action selector="buttonTaped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eQn-48-nEB"/>
+                                    <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8tc-9s-MEV"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cac-l9-aQ9">
                                 <rect key="frame" x="107" y="398" width="200" height="100"/>
                                 <state key="normal" image="us"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G6H-hk-IrU"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QnP-oQ-7gZ">
-                                <rect key="frame" x="107" y="246" width="200" height="100"/>
-                                <state key="normal" image="us"/>
-                                <connections>
-                                    <action selector="buttonTaped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eQn-48-nEB"/>
-                                    <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8tc-9s-MEV"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -52,9 +52,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="HNA-Xa-BrM"/>
                     <connections>
-                        <outlet property="buttonOne" destination="Xc5-FE-0GP" id="JWT-Bg-Lhn"/>
-                        <outlet property="buttonThree" destination="cac-l9-aQ9" id="Gbw-7X-9nx"/>
-                        <outlet property="buttonTwo" destination="cac-l9-aQ9" id="XPA-6G-4V5"/>
+                        <outlet property="buttonOne" destination="Xc5-FE-0GP" id="3XL-DH-T8T"/>
+                        <outlet property="buttonThree" destination="cac-l9-aQ9" id="aWg-DQ-oa4"/>
+                        <outlet property="buttonTwo" destination="QnP-oQ-7gZ" id="8gC-xH-uxI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
