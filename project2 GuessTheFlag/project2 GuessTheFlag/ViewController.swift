@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Score", style: .plain, target: self, action: #selector(scoreAlert))
+        
         countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "nigeria", "poland", "russia", "spain", "uk", "us"]
         
         button1.layer.borderWidth = 1
@@ -33,6 +35,8 @@ class ViewController: UIViewController {
         button3.layer.borderColor = UIColor.lightGray.cgColor
 
         askQuestion()
+        
+        
     }
     func askQuestion(action: UIAlertAction! = nil) {
         countries.shuffle()
@@ -42,7 +46,7 @@ class ViewController: UIViewController {
         button2.setImage(UIImage(named: countries[1]), for: .normal)
         button3.setImage(UIImage(named: countries[2]), for: .normal)
         
-        title = "Your score is \(score), which - \(countries[correctAnswer].uppercased())?"
+        title = "Which - \(countries[correctAnswer].uppercased())?"
     }
     @IBAction func buttonTapped(_ sender: UIButton) {
         var title: String
@@ -65,7 +69,15 @@ class ViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
         present(ac, animated: true)
         
+        
+       
     }
+    @objc func scoreAlert() {
+        let score1 = UIAlertController(title: "Your score is \(score)", message: nil, preferredStyle: .actionSheet)
+        score1.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(score1, animated: true)
+    }
+  
         
     
 }
