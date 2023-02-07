@@ -17,6 +17,9 @@ class ViewController: UIViewController {
     var score = 0
     var correctAnswer = 0
     var track = 0
+    var highScore = 0
+    var keyHigh = "highScore"
+    let maxTrack = 10
     
     
     override func viewDidLoad() {
@@ -33,6 +36,10 @@ class ViewController: UIViewController {
         button1.layer.borderColor = UIColor.lightGray.cgColor
         button2.layer.borderColor = UIColor.lightGray.cgColor
         button3.layer.borderColor = UIColor.lightGray.cgColor
+        
+        let userDefaults = UserDefaults.standard
+                 highScore = userDefaults.object(forKey: keyHigh) as? Int ?? 0
+                 print("Current top score", highScore)
 
         askQuestion()
         
@@ -59,6 +66,8 @@ class ViewController: UIViewController {
             title = "Wrong! That's the flag of \(countries[sender.tag]) "
             score -= 1
             track += 1
+            
+            Alert()
         }
         
         if track == 10 {
@@ -72,10 +81,47 @@ class ViewController: UIViewController {
         
        
     }
+    func gameOver() {
+             let finalScore = score
+             var message = "Your score is \(finalScore)"
+
+             if score > highScore {
+                 message += "\n\nNew Highest Score\nPrevious highest: \(highScore)"
+                 highScore = score
+             }
+
+             score = 0
+             correctAnswer = 0
+             track = 0
+             let userDefaults = UserDefaults.standard
+             userDefaults.set(highScore, forKey: keyHigh)
+
+             let ac = UIAlertController(title: "Game over!", message: message, preferredStyle: .alert)
+
+             ac.addAction(UIAlertAction(title: "Start new game", style: .default, handler: askQuestion))
+
+             present(ac, animated: true)
+         }
+    
     @objc func scoreAlert() {
         let score1 = UIAlertController(title: "Your score is \(score)", message: nil, preferredStyle: .actionSheet)
         score1.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(score1, animated: true)
+    }
+    
+    @objc func saveHighScore() {
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(highScore, forKey: keyHigh)
+    }
+    
+    func Alert() {
+        
+        if track < maxTrack {
+            askQuestion()
+        } else {
+            gameOver()
+        }
+        
     }
   
         
