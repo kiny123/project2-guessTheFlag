@@ -5,9 +5,10 @@
 //  Created by nikita on 11.12.2022.
 //
 
+import UserNotifications
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UNUserNotificationCenterDelegate {
 
     @IBOutlet var button1: UIButton!
     @IBOutlet var button2: UIButton!
@@ -20,12 +21,17 @@ class ViewController: UIViewController {
     var highScore = 0
     var keyHigh = "highScore"
     let maxTrack = 10
+    var isGameOver = false
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerLocal()
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Score", style: .plain, target: self, action: #selector(scoreAlert))
+    
+        
         
         countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "nigeria", "poland", "russia", "spain", "uk", "us"]
         
@@ -42,7 +48,7 @@ class ViewController: UIViewController {
                  print("Current top score", highScore)
 
         askQuestion()
-        
+        scheduleLocal()
         
     }
     func askQuestion(action: UIAlertAction! = nil) {
@@ -54,9 +60,15 @@ class ViewController: UIViewController {
         button3.setImage(UIImage(named: countries[2]), for: .normal)
         
         title = "Which - \(countries[correctAnswer].uppercased())?"
+        
     }
     @IBAction func buttonTapped(_ sender: UIButton) {
         var title: String
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [], animations: {
+            
+            sender.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        })
         
         if sender.tag == correctAnswer {
             title = "Correct"
@@ -69,6 +81,9 @@ class ViewController: UIViewController {
             
             Alert()
         }
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [], animations: {
+            sender.transform = .identity
+        })
         
         if track == 10 {
             title = "Nice! You answered 10 questions! Your final score is \(score)"
@@ -82,6 +97,7 @@ class ViewController: UIViewController {
        
     }
     func gameOver() {
+        isGameOver = true
              let finalScore = score
              var message = "Your score is \(finalScore)"
 
@@ -101,6 +117,7 @@ class ViewController: UIViewController {
              ac.addAction(UIAlertAction(title: "Start new game", style: .default, handler: askQuestion))
 
              present(ac, animated: true)
+        
          }
     
     @objc func scoreAlert() {
@@ -123,8 +140,73 @@ class ViewController: UIViewController {
         }
         
     }
-  
-        
     
+    func registerLocal() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound]){ granted, error in
+            if granted{
+                print("Yay")
+            } else {
+                print("Oops")
+            }
+            
+        }
+    }
+    
+    
+     func scheduleLocal() {
+        registerCategories()
+        
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Hey! Let's choose flags!"
+        content.body = "Game is need you"
+        content.categoryIdentifier = "alarm"
+        content.userInfo = ["customData": "fizzbuzz"]
+        content.sound = .default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 10
+        dateComponents.minute = 30
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
+    }
+    
+    func registerCategories() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        let show = UNNotificationAction(identifier: "Show", title: "Play the game", options: .foreground)
+        let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [])
+        center.setNotificationCategories([category])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        if let customData = userInfo["customData"] as? String {
+            print("custom data received \(customData)")
+            
+            switch response.actionIdentifier {
+                case UNNotificationDefaultActionIdentifier:
+                    print("defaultIdentifier")
+                
+                case "show":
+                 print("Show more information")
+                    
+            default:
+                break;
+            }
+        }
+        
+        completionHandler()
+    }
+    
+
 }
 
